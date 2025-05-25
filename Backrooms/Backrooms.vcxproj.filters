@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{d1eb230e-75b5-4d25-af78-c74de20e7b4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{d01a6c40-8de1-4b8c-bda6-76af728ab2fb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\glad.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\learnopengl\camera.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="include\learnopengl\mesh.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="include\learnopengl\model.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="include\learnopengl\shader.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shader\3.1.2.shadow_mapping.fs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\3.1.2.shadow_mapping.vs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\3.1.2.shadow_mapping_depth.fs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\3.1.2.shadow_mapping_depth.vs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\6.1.skybox.fs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\6.1.skybox.vs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\light.fs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\light.vs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="7.bloom.vs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="7.bloom.fs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="7.bloom_final.vs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="7.bloom_final.fs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="7.light_box.fs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="7.blur.vs">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="7.blur.fs">
+      <Filter>Shader</Filter>
+    </None>
+  </ItemGroup>
+</Project>
