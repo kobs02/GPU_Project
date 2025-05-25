@@ -29,19 +29,19 @@
     <ClInclude Include="include\learnopengl\shader.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="7.bloom.fs" />
-    <None Include="7.bloom.vs" />
-    <None Include="7.bloom_final.fs" />
-    <None Include="7.bloom_final.vs" />
-    <None Include="7.blur.fs" />
-    <None Include="7.blur.vs" />
-    <None Include="7.light_box.fs" />
     <None Include="shader\3.1.2.shadow_mapping.fs" />
     <None Include="shader\3.1.2.shadow_mapping.vs" />
     <None Include="shader\3.1.2.shadow_mapping_depth.fs" />
     <None Include="shader\3.1.2.shadow_mapping_depth.vs" />
     <None Include="shader\6.1.skybox.fs" />
     <None Include="shader\6.1.skybox.vs" />
+    <None Include="shader\7.bloom.fs" />
+    <None Include="shader\7.bloom.vs" />
+    <None Include="shader\7.bloom_final.fs" />
+    <None Include="shader\7.bloom_final.vs" />
+    <None Include="shader\7.blur.fs" />
+    <None Include="shader\7.blur.vs" />
+    <None Include="shader\7.light_box.fs" />
     <None Include="shader\light.fs" />
     <None Include="shader\light.vs" />
   </ItemGroup>

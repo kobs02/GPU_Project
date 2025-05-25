@@ -230,7 +230,7 @@ int main()
 
     // shadow mapping용 깊이 텍스처 생성 및 FBO 설정
     // -----------------------s
-    const unsigned int SHADOW_WIDTH = 8192, SHADOW_HEIGHT = 8192;
+    const unsigned int SHADOW_WIDTH = 4096, SHADOW_HEIGHT = 4096;
     unsigned int depthMapFBO;
     glGenFramebuffers(1, &depthMapFBO);
 
@@ -331,15 +331,6 @@ int main()
             std::cout << "Framebuffer not complete!" << std::endl;
     }
 
-    // 조명 위치 정의 (총 4개)
-    std::vector<glm::vec3> lightPositions;
-    lightPositions.push_back(glm::vec3(0.0f, 0.5f, 0.0f));
-    
-
-    // 각 조명에 대응하는 컬러 정의
-    std::vector<glm::vec3> lightColors;
-    lightColors.push_back(glm::vec3(5.0f, 5.0f, 5.0f));   // 흰색
-
     // shader configuration
     // --------------------
     shader.use();
@@ -381,6 +372,7 @@ int main()
         lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
         lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
         lightSpaceMatrix = lightProjection * lightView;
+
         // render scene from light's point of view
         simpleDepthShader.use();
         simpleDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
@@ -440,13 +432,6 @@ int main()
         glDepthFunc(GL_LESS); // set depth function back to default
         
 
-        // set lighting uniforms
-        for (unsigned int i = 0; i < lightPositions.size(); i++)
-        {
-            shader.setVec3("lights[" + std::to_string(i) + "].Position", lightPositions[i]);
-            shader.setVec3("lights[" + std::to_string(i) + "].Color", lightColors[i]);
-        }
-        shader.setVec3("viewPos", camera.Position);
 
         /*
         // create one large cube that acts as the floor
@@ -461,7 +446,7 @@ int main()
         shaderLight.setMat4("projection", projection);
         shaderLight.setMat4("view", view);
 
-     
+        /*
         
         // blur postprocessing
         // 1. render scene into floating point framebuffer
@@ -487,7 +472,7 @@ int main()
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, woodTexture);
         */
-
+        /*
         // 광원 위치/색상 유니폼 설정
         for (unsigned int i = 0; i < lightPositions.size(); i++) {
             shader.setVec3("lights[" + std::to_string(i) + "].Position", lightPositions[i]);
@@ -566,7 +551,7 @@ int main()
         shaderBloomFinal.setFloat("exposure", exposure);
 
         renderQuad(); // bloom 및 tone-mapped 결과를 스크린에 출력
-        
+        */
 
 
         // draw skybox as last
@@ -624,7 +609,7 @@ void renderScene(const Shader& shader)
 
     // 형광등
     renderSquareLight(shader, glm::vec3(0.0f, 1.999f, 2.5f), glm::vec3(1.0f, 0.0f, 0.0f), 90.0f, glm::vec3(0.5f));
-    // renderSquareLightWithBloom(shader, shader, shader, glm::vec3(0.0f, 1.999f, 2.5f), glm::vec3(1.0f, 0.0f, 0.0f), 90.0f, glm::vec3(0.5f));
+    // renderSquareLight(shader, glm::vec3(0.0f, 1.999f, -10.0f), glm::vec3(1.0f, 0.0f, 0.0f), 90.0f, glm::vec3(0.5f));
 
     // 스폰지점 십자가 통로
 
@@ -641,12 +626,12 @@ void renderScene(const Shader& shader)
     // 앞 방향 오른쪽 통로(가로)
     renderWall(shader, glm::vec3(3.0f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, glm::vec3(1.5f));
     renderWall(shader, glm::vec3(6.0f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, glm::vec3(1.5f));
-    renderWall(shader, glm::vec3(8.0f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(9.0f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, glm::vec3(1.5f));
 
     // 앞 방향 왼쪽통로(가로)
     renderWall(shader, glm::vec3(-3.0f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, glm::vec3(1.5f));
     renderWall(shader, glm::vec3(-6.0f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, glm::vec3(1.5f));
-    renderWall(shader, glm::vec3(-8.0f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-9.0f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, glm::vec3(1.5f));
 
 
 
@@ -654,22 +639,95 @@ void renderScene(const Shader& shader)
     renderWall(shader, glm::vec3(0.0f, -0.5f, 6.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
 
     renderWall(shader, glm::vec3(0.0f, -0.5f, 9.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
-    renderWall(shader, glm::vec3(0.0f, -0.5f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(0.0f, -0.5f, 12.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
 
     // 뒤 방향 왼쪽벽(세로)
     renderWall(shader, glm::vec3(3.0f, -0.5f, 6.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
     renderWall(shader, glm::vec3(3.0f, -0.5f, 9.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
-    renderWall(shader, glm::vec3(3.0f, -0.5f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(3.0f, -0.5f, 12.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
 
     // 뒤 방향 오른쪽 통로(가로)
     renderWall(shader, glm::vec3(-3.0f, -0.5f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, glm::vec3(1.5f));
     renderWall(shader, glm::vec3(-6.0f, -0.5f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, glm::vec3(1.5f));
-    renderWall(shader, glm::vec3(-8.0f, -0.5f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-9.0f, -0.5f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, glm::vec3(1.5f));
 
     // 뒤 방향 왼쪽 통로(가로)
     renderWall(shader, glm::vec3(3.0f, -0.5f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, glm::vec3(1.5f));
     renderWall(shader, glm::vec3(6.0f, -0.5f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, glm::vec3(1.5f));
-    renderWall(shader, glm::vec3(8.0f, -0.5f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(9.0f, -0.5f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, glm::vec3(1.5f));
+
+
+
+    // 앞 방
+    renderWall(shader, glm::vec3(3.0f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(6.0f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(9.0f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(12.0f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(15.0f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(18.0f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(21.0f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(23.5f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(23.5f, -0.5f, -8.0f), glm::vec3(0.0f, 1.0f, 0.0f), 270.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(23.5f, -0.5f, -11.0f), glm::vec3(0.0f, 1.0f, 0.0f), 270.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(23.5f, -0.5f, -14.0f), glm::vec3(0.0f, 1.0f, 0.0f), 270.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(23.5f, -0.5f, -17.0f), glm::vec3(0.0f, 1.0f, 0.0f), 270.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(23.5f, -0.5f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f), 270.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(23.5f, -0.5f, -22.0f), glm::vec3(0.0f, 1.0f, 0.0f), 270.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(23.5f, -0.5f, -23.5f), glm::vec3(0.0f, 1.0f, 0.0f), 270.0f, glm::vec3(1.5f));
+
+
+    renderWall(shader, glm::vec3(-3.0f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-6.0f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-9.0f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-12.0f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-15.0f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-18.0f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-21.0f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-23.5f, -0.5f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-23.5f, -0.5f, -8.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-23.5f, -0.5f, -11.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-23.5f, -0.5f, -14.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-23.5f, -0.5f, -17.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-23.5f, -0.5f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-23.5f, -0.5f, -22.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-23.5f, -0.5f, -23.5f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
+
+    renderWall(shader, glm::vec3(-23.5f, -0.5f, -26.5f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-21.0f, -0.5f, -26.5f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f, glm::vec3(1.5f));
+    for(int i = 0; i < 15; i++) {
+        renderWall(shader, glm::vec3(-18.0f + i * 3.0f, -0.5f, -26.5f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f, glm::vec3(1.5f));
+	}
+   
+
+    //기둥 1
+    renderWall(shader, glm::vec3(6.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(6.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(6.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(6.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 270.0f, glm::vec3(1.5f));
+
+    //기둥 2
+    renderWall(shader, glm::vec3(0.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(0.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(0.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(0.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 270.0f, glm::vec3(1.5f));
+    
+    //기둥 3
+    renderWall(shader, glm::vec3(-6.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-6.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-6.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-6.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 270.0f, glm::vec3(1.5f));
+
+    //기둥 4
+    renderWall(shader, glm::vec3(12.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(12.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(12.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(12.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 270.0f, glm::vec3(1.5f));
+
+    //기둥 5
+    renderWall(shader, glm::vec3(-12.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-12.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-12.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f, glm::vec3(1.5f));
+    renderWall(shader, glm::vec3(-12.0f, -0.5f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 270.0f, glm::vec3(1.5f));
 }
 
 // 벽 렌더링 함수
